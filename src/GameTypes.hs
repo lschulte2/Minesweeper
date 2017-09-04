@@ -54,7 +54,7 @@ type Minefield = Array Position (Entity Stats)
 
 -- | An standard, lazy map which associates all movable, active entities on the
 --   minefield with its coordinates (Position)
-type Entities = M.Map Position (Entity Item Stats)
+type Entities = M.Map Position (Entity Stats)
 
 -- | An standard, lazy map for the graphics; keys are the associated file names
 type Pics = M.Map String Picture
@@ -77,10 +77,7 @@ instance Eq Events where
 
 --    -Mine - if revealed loose the Game
 --    -Floor - can be covered or revealed, can be flagged, can contain a mine or an Integer
-data Entity s
-   = Floor {_stats :: s, _on :: Events }
-   | Mine {_stats :: s, _on :: Events }
-   | Wall
+data Field = Field Bool Bool Bool Integer Bool
    deriving (Show, Eq, Functor)
 
 data Stats 
@@ -129,7 +126,8 @@ fromVector vec =
 data Action 
    = Move { _dir :: Direction }
    | Pause
-   | Check 
+   | Check
+   | SetFlag 
     deriving (Show,Eq)
 
 data GameConfig = GameConfig
