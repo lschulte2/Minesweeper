@@ -128,6 +128,42 @@ fromVector vec =
 
 data Action 
    = Move { _dir :: Direction }
-   |Pause
-   |
+   | Pause
+   | Check 
+    deriving (Show,Eq)
+
+data GameConfig = GameConfig
+        { _pictures :: Pics
+        , _tileSize :: Float
+        , _levels   :: Array Integer World
+        , _keyMap   :: Char -> Maybe Action
+        }
+
+{- * Lenses for the World type -}
+$(makeLenses ''World)
+
+{- * Lenses for the Stats type -}
+$(makeLenses ''Stats)
+
+{- * Prisms for the Action type -}
+$(makePrisms ''Action)
+
+{- * Traversals for the Action type -}
+$(makeLenses ''Action)
+
+{- * Prisms for the Entity type -}
+$(makePrisms ''Entity)
+
+{- * Traversals for the Entity type -}
+$(makeLenses ''Entity)
+
+{- * Traversals for the Effects type -}
+$(makeLenses ''Effects)
+
+{- * Traversals for the EffectTrigger type -}
+$(makeLenses ''EffectTrigger)
+
+$(makeLenses ''GameConfig)
+
+
 
