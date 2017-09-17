@@ -94,15 +94,6 @@ data Stats
 instance Default Stats where 
    def = Stats 0 North 0 True
 
--- | Map of Effects
-newtype Effects = Effects {_unEffect :: Map String (EffectCondition Integer Item, EffectConsequence Integer Item)}
-
-instance Show Effects where
-  show (Effects m) = show $ keys m
-
-instance Eq Effects where
-  (Effects a) == (Effects b) = keys a == keys b
-
 -- | Converts to a vector (V2 Integer)
 toVector :: Direction -> DirVector
 toVector North = V2 (-1)  0
