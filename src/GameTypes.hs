@@ -54,7 +54,7 @@ type Minefield = Array Position (Entity Stats)
 
 -- | An standard, lazy map which associates all movable, active entities on the
 --   minefield with its coordinates (Position)
-type Entities = M.Map Position (Entity Item Stats)
+type Entities = M.Map Position (Entity Stats)
 
 -- | An standard, lazy map for the graphics; keys are the associated file names
 type Pics = M.Map String Picture
@@ -62,12 +62,12 @@ type Pics = M.Map String Picture
 -- | Position of an entity in the world
 type Position = V2 Integer
 
-type WorldCondtion = Position -> World -> Bool
+type WorldCondition = Position -> World -> Bool
 type WorldConsequence = Position -> GameT ()
 
-newtype Events = Events {unEvent :: Map String (WorldCondition, WolrdConsequence)}
+newtype Events = Events {unEvent :: Map String (WorldCondition, WorldConsequence)}
 
-instance Eq Events where
+instance Show Events where
    show (Events m) = show $ keys m
 
 instance Eq Events where
@@ -79,7 +79,6 @@ instance Eq Events where
 --    -Floor - can be covered or revealed, can be flagged, can contain a mine or an Integer
 data Entity s
    = Floor {_stats :: s, _on :: Events }
-   | Mine {_stats :: s, _on :: Events }
    | Wall
    deriving (Show, Eq, Functor)
 
@@ -94,12 +93,6 @@ data Stats
 
 instance Default Stats where 
    def = Stats 0 North 0 True
-
--- | Condition for an Effect to trigger
-type EffectCondition   r i = EffectTrigger r i -> World -> Bool
-
--- | The effect itself, the consequence of the effect
-type EffectConsequence r i = EffectTrigger r i -> GameT (EffectTrigger r i)
 
 -- | Map of Effects
 newtype Effects = Effects {_unEffect :: Map String (EffectCondition Integer Item, EffectConsequence Integer Item)}
